@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#2B1A10" />
+
+    <title>Event Countdown</title>
+    <meta
+      name="description"
+      content="Live countdown to Thursday, November 26, 2026 at 7:00 PM (Cairo Time)."
+    />
+
+    <!-- Open Graph Meta Tags (used when sharing the link or scanning QR previews) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Event Countdown" />
+    <meta
+      property="og:description"
+      content="Join us on Thursday, November 26, 2026 at 7:00 PM (Cairo Time)."
+    />
+    <meta property="og:image" content="poster.jpg" />
+    <meta property="og:image:alt" content="Event poster" />
+
+    <!-- Twitter / X Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Event Countdown" />
+    <meta
+      name="twitter:description"
+      content="Join us on Thursday, November 26, 2026 at 7:00 PM (Cairo Time)."
+    />
+    <meta name="twitter:image" content="poster.jpg" />
+
+    <!-- Favicon (SVG primary with ICO fallback) -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="alternate icon" href="favicon.ico" />
+
+    <!-- Styles & Countdown Script -->
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <main class="page">
+      <!-- 1. Responsive Event Poster -->
+      <figure class="poster">
+        <img
+          src="poster.jpg"
+          alt="Event poster"
+          class="poster__image"
+          decoding="async"
+        />
+      </figure>
+
+      <!-- 2. Live Countdown Timer -->
+      <section class="countdown" aria-label="Countdown timer">
+        <div class="countdown__grid" id="countdown-grid">
+          <div class="countdown__box">
+            <span class="countdown__number" id="hours">00</span>
+            <span class="countdown__label">Hours</span>
+          </div>
+
+          <div class="countdown__box">
+            <span class="countdown__number" id="minutes">00</span>
+            <span class="countdown__label">Minutes</span>
+          </div>
+
+          <div class="countdown__box">
+            <span class="countdown__number" id="seconds">00</span>
+            <span class="countdown__label">Seconds</span>
+          </div>
+        </div>
+
+        <!-- Shown automatically instead of the numbers when the timer reaches zero -->
+        <p
+          class="countdown__showtime"
+          id="showtime-message"
+          role="status"
+          aria-live="polite"
+          hidden
+        >
+          It's showtime!
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

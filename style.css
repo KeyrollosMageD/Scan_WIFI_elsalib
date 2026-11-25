@@ -1,0 +1,282 @@
+/* ==========================================================================
+   Golden-Hour Sunset Palette & Base Reset
+   Uses relative units only (rem, em, %, vw, svh, dvh, vmin, fr) — no fixed px.
+   ========================================================================== */
+:root {
+  --bg-deep-brown: #2B1A10;
+  --accent-sunset: #E8833A;
+  --accent-crimson: #8C1F28;
+  --surface-cream: #F5E6D3;
+  --highlight-gold: #F4C95D;
+
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-deep-brown);
+  /* Warm golden-hour ambient sunset glow behind the poster and countdown */
+  background-image:
+    radial-gradient(
+      circle at 50% 30%,
+      rgba(244, 201, 93, 0.22) 0%,
+      rgba(232, 131, 58, 0.16) 34%,
+      rgba(43, 26, 16, 0) 70%
+    ),
+    radial-gradient(
+      circle at 50% 90%,
+      rgba(140, 31, 40, 0.25) 0%,
+      rgba(43, 26, 16, 0) 60%
+    );
+  color: var(--surface-cream);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   Main Centered Layout
+   ========================================================================== */
+.page {
+  width: 100%;
+  max-width: 44rem;
+  padding: clamp(1.25rem, 4vmin, 2.5rem) clamp(1rem, 4vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.4rem, 4vmin, 2.35rem);
+}
+
+/* ==========================================================================
+   1. Poster Image (scales cleanly on phones & laptops)
+   ========================================================================== */
+.poster {
+  margin: 0;
+  width: 100%;
+}
+
+.poster__image {
+  display: block;
+  margin-inline: auto;
+  width: auto;
+  height: auto;
+  max-width: min(90vw, 29rem);
+  max-height: clamp(15rem, 56svh, 32rem);
+  border-radius: 1.1rem;
+  border: 0.09375rem solid rgba(244, 201, 93, 0.42);
+  box-shadow:
+    0 1.25rem 3rem rgba(18, 9, 4, 0.72),
+    0 0 2.75rem rgba(232, 131, 58, 0.24),
+    0 0 1rem rgba(244, 201, 93, 0.18);
+}
+
+/* ==========================================================================
+   2. Countdown Timer (3 responsive boxes: Hours, Minutes, Seconds)
+   ========================================================================== */
+.countdown {
+  width: 100%;
+  max-width: 34rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.countdown__grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.65rem, 2.6vw, 1.35rem);
+}
+
+.countdown__box {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.95rem, 3.2vmin, 1.55rem) clamp(0.5rem, 2vw, 1.2rem);
+  background-color: var(--surface-cream);
+  background-image: radial-gradient(
+    circle at 50% 0%,
+    rgba(244, 201, 93, 0.25) 0%,
+    rgba(245, 230, 211, 0) 72%
+  );
+  border: 0.09375rem solid var(--highlight-gold);
+  border-radius: 1rem;
+  box-shadow:
+    0 0.85rem 2rem rgba(18, 9, 4, 0.55),
+    0 0 1.15rem rgba(244, 201, 93, 0.22),
+    inset 0 0.0625rem 0 rgba(255, 255, 255, 0.65);
+  animation:
+    boxEnter 0.65s cubic-bezier(0.22, 1, 0.36, 1) backwards,
+    goldenPulse 3.8s ease-in-out infinite;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+/* Subtle staggered entrance & golden wave across the three boxes */
+.countdown__box:nth-child(1) {
+  animation-delay: 0.05s, 0s;
+}
+.countdown__box:nth-child(2) {
+  animation-delay: 0.15s, 1.25s;
+}
+.countdown__box:nth-child(3) {
+  animation-delay: 0.25s, 2.5s;
+}
+
+/* Warm sunset-to-gold accent bar along the top of each box */
+.countdown__box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0.25rem;
+  background: linear-gradient(
+    90deg,
+    var(--accent-crimson) 0%,
+    var(--accent-sunset) 50%,
+    var(--highlight-gold) 100%
+  );
+}
+
+.countdown__number {
+  font-size: clamp(1.95rem, 8.2vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--accent-crimson);
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0.0625rem 0 rgba(255, 255, 255, 0.6);
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), color 0.22s ease;
+}
+
+/* Smooth warm pulse triggered whenever a box's value updates */
+.countdown__box.is-ticking .countdown__number {
+  transform: translateY(-0.07rem) scale(1.04);
+  color: var(--accent-sunset);
+}
+
+.countdown__label {
+  margin-top: clamp(0.35rem, 1vmin, 0.55rem);
+  font-size: clamp(0.68rem, 2.1vw, 0.84rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bg-deep-brown);
+  opacity: 0.85;
+}
+
+/* ==========================================================================
+   Zero-State Message ("It's showtime!")
+   ========================================================================== */
+.countdown__showtime {
+  margin: 0;
+  width: 100%;
+  padding: clamp(1.3rem, 4vmin, 2rem) clamp(1rem, 4vw, 2rem);
+  text-align: center;
+  font-size: clamp(1.75rem, 6.5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--surface-cream);
+  background: linear-gradient(
+    135deg,
+    var(--accent-crimson) 0%,
+    var(--bg-deep-brown) 100%
+  );
+  border: 0.125rem solid var(--highlight-gold);
+  border-radius: 1rem;
+  box-shadow:
+    0 0.85rem 2.25rem rgba(18, 9, 4, 0.65),
+    0 0 2.25rem rgba(244, 201, 93, 0.35);
+  text-shadow: 0 0 1.25rem rgba(244, 201, 93, 0.45);
+  animation:
+    boxEnter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both,
+    goldenPulse 3.4s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+/* Subtle lift on laptop/desktop hover */
+@media (min-width: 48em) {
+  .countdown__box:hover {
+    transform: translateY(-0.15rem);
+    border-color: var(--accent-sunset);
+  }
+}
+
+/* Ultra-narrow screens (e.g. folded mini displays < 19.5em) */
+@media (max-width: 19.5em) {
+  .countdown__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   Golden Glow Animations & Reduced-Motion Support
+   ========================================================================== */
+@keyframes boxEnter {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes goldenPulse {
+  0%,
+  100% {
+    border-color: rgba(244, 201, 93, 0.55);
+    box-shadow:
+      0 0.85rem 2rem rgba(18, 9, 4, 0.55),
+      0 0 0.85rem rgba(244, 201, 93, 0.16),
+      inset 0 0.0625rem 0 rgba(255, 255, 255, 0.65);
+  }
+  50% {
+    border-color: var(--highlight-gold);
+    box-shadow:
+      0 0.85rem 2rem rgba(18, 9, 4, 0.55),
+      0 0 1.85rem rgba(244, 201, 93, 0.42),
+      0 0 0.65rem rgba(232, 131, 58, 0.28),
+      inset 0 0.0625rem 0 rgba(255, 255, 255, 0.75);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .countdown__box,
+  .countdown__number,
+  .countdown__showtime {
+    animation: none;
+    transition: none;
+  }
+
+  .countdown__box.is-ticking .countdown__number {
+    transform: none;
+  }
+}
